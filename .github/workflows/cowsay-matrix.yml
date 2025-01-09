@@ -27,12 +27,18 @@ jobs:
           - therese
           - josette
           - geraldine
+
+        exclude: 
+          - model:
+            - docker
+            - squirel
+
         steps:
           - name: output pipeline
             id: cowsay_output_id # You want id
             uses: Code-Hex/neo-cowsay-action@v1
             with:
-              message: je suis {{ matrix.VACHE }}
+              message: je suis ${{ matrix.VACHE }}
               cow: ${{matrix.model}}    # ascii art list: https://github.com/Code-Hex/Neo-cowsay/tree/master/cows
               cowsay_to_output: 'cowsay'
           - name: print output
