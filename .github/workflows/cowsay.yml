@@ -9,41 +9,41 @@ on:
 jobs:
   build:
     runs-on: ubuntu-24.04
+    environment: PROD
     steps:
       - name: output pipeline
         id: cowsay_output_id # You want id
         uses: Code-Hex/neo-cowsay-action@v1
         with:
-          message: ${{ vars.COWSAY-MESSAGE }}
+          message: ${{ vars.COWSAY_MESSAGE }}
           cow: 'gopher' # ascii art list: https://github.com/Code-Hex/Neo-cowsay/tree/master/cows
           cowsay_to_output: 'cowsay'
       - name: print output
         run: |
-          echo "${{ steps.cowsay_output_id.outputs.cowsay }}"- name: output pipeline > cowsay.txt
+          echo "${{ steps.cowsay_output_id.outputs.cowsay }}" > cowsay.txt
       
-      # petit test
-      - name: Test output
+      - name: test output
         run: |
           grep "_,,_" cowsay.txt
-
-      - name: Upload static artifact files
+      
+      - name: Upload static files as artifact
         id: deployment
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v4 # or specific "vX.X.X" version tag for this action
         with:
           path: cowsay.txt
           name: notrevache
 
-
-
   deploy:
-    runs-on:
-      - self-hosted
-      - cowsay-t
+    runs-on: self-hosted
     needs: build
     steps:
       - uses: actions/download-artifact@v4
         with:
-          path: /var/www/html
+          path: /var/www/html/
           name: notrevache
-    
-        
+
+#      - name: install and run cowsay
+#        run: |
+#          apt update
+#          apt install cowsay
+#          cowsay "Test" > /var/www/html/cowsay.txt
