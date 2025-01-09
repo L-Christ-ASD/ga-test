@@ -37,11 +37,15 @@ jobs:
     runs-on: self-hosted
     needs: build
     steps:
-      - uses: actions/download-artifact@v4
+      - name: Download artifacts
+        uses: actions/download-artifact@v4
         with:
           path: /var/www/html/
           name: notrevache
-
+      - name: Debug Info 
+        run: | 
+          ls -la /var/www/html/ 
+          df -h
 #      - name: install and run cowsay
 #        run: |
 #          apt update
