@@ -1,0 +1,42 @@
+---
+
+name: show matrix
+
+on:
+  push:
+  workflow_dispatch:
+    
+
+jobs:
+  demo-matrix:
+    runs-on: ubuntu-24.04
+    strategy:
+      max-parallel: 2 # faire tourner par deux pour eviter de saturer le runneurs
+#     fail-fast: true
+      matrix:
+        model:
+          - gopher
+          - cower
+          - squirel
+          - koala
+          - ghostbuster
+          - vader
+        vache:
+          - paulette
+          - augustine
+          - therese
+          - josette
+          - geraldine
+        steps:
+          - name: output pipeline
+            id: cowsay_output_id # You want id
+            uses: Code-Hex/neo-cowsay-action@v1
+            with:
+              message: je suis {{ matrix.VACHE }}
+              cow: ${{matrix.model}}    # ascii art list: https://github.com/Code-Hex/Neo-cowsay/tree/master/cows
+              cowsay_to_output: 'cowsay'
+          - name: print output
+            run: |
+              echo "${{ steps.cowsay_output_id.outputs.cowsay }}"- name: output pipeline
+
+            
